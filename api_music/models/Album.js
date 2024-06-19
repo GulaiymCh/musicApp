@@ -15,13 +15,23 @@ const AlbumSchema = new Schema({
     required: true,
   },
   date: {
-    type: Number,
+    type: Date,
     required: true,
   },
   image: {
     type: String,
     required: true,
   },
+  publish: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }
 });
 
 AlbumSchema.plugin(uniqueValidator, {message: 'Error, expected {PATH} to be unique'});
