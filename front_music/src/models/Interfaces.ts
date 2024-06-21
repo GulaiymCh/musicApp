@@ -27,14 +27,17 @@ export interface ITrack {
   mp3?: string
 }
 
-export interface IUser {
-  username: string,
-  password: string,
+export interface IUserLogin {
+  email: string,
+  password: string
+}
+
+export interface IUserRegister extends IUserLogin{
   displayName: string,
   avatarImage?: string
 }
 
-export interface IUserApi extends IUser {
+export interface IUserApi extends IUserRegister {
   token: string,
   role: string,
 }

@@ -9,9 +9,9 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
   try {
-    const {username, password, displayName, avatarImage} = req.body;
+    const {email, password, displayName, avatarImage} = req.body;
     const userData = {
-      username,
+      email,
       password,
       displayName,
       avatarImage: avatarImage || null,
@@ -44,11 +44,11 @@ router.post('/facebookRegister', async (req, res) => {
       return res.status(401).send('Wrong User ID!');
     }
     
-    let user = await User.findOne({username: req.body.id});
+    let user = await User.findOne({email: req.body.id});
     
     if (!user) {
       user = new User({
-        username: req.body.id,
+        email: req.body.id,
         displayName:  req.body.name,
         password: nanoid(),
         avatarImage: req.body.picture.data.url,
@@ -67,17 +67,17 @@ router.post('/facebookRegister', async (req, res) => {
 });
 
 router.post('/sessions', async (req, res) => {
-  const {username, password} = req.body;
-  const user = await User.findOne({username});
+  const {email, password} = req.body;
+  const user = await User.findOne({email});
   
   if (!user) {
-    return res.status(401).send('Username or password is wrong');
+    return res.status(401).send('email or password is wrong');
   }
   
   const isMatch = await user.checkPassword(password);
   
   if (!isMatch) {
-    return res.status(401).send('Username or password is wrong');
+    return res.status(401).send('email or password is wrong');
   }
   
   try {
@@ -107,7 +107,7 @@ router.post('/facebookLogin', async (req, res) => {
       return res.status(401).send('Wrong User ID!');
     }
     
-    let user = await User.findOne({username: req.body.id});
+    let user = await User.findOne({email: req.body.id});
     
     if (!user) {
       return res.status(400).send('This user is not registered!');

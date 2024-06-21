@@ -150,7 +150,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 size="small"
                 component={Link}
-                to='/register'
+                to='/login'
               >
                 Sign in
               </Button>
@@ -220,7 +220,6 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       variant="contained"
                       component={Link}
                       to='/register'
-                      target="_blank"
                       sx={{ width: '100%' }}
                     >
                       Sign up
@@ -231,7 +230,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       color="primary"
                       variant="outlined"
                       component={Link}
-                      to='/register'
+                      to='/login'
                       sx={{ width: '100%' }}
                     >
                       Sign in

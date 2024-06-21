@@ -17,14 +17,14 @@ const run = async () => {
   }
   
   const [admin, tom] = await User.create({
-    username: 'admin@gmail.com',
+    email: 'admin@gmail.com',
     password: 'admin',
     role: 'admin',
     token: nanoid(),
     displayName: 'Admin',
     avatarImage: 'https://img.icons8.com/color/480/avatar.png',
   }, {
-    username: 'tom@gmail.com',
+    email: 'tom@gmail.com',
     password: 'tom',
     role: 'user',
     token: nanoid(),

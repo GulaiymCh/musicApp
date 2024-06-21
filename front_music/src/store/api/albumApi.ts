@@ -6,7 +6,12 @@ export const albumApi = api.injectEndpoints({
       query: () => '/albums'
     }),
     getArtistAlbums: build.query({
-      query: (id) => `/albums?artist=${id}`,
+      query: (id) => ({
+        url: `/albums`,
+        params: {
+          artist: id
+        }
+      }),
     }),
     createAlbum: build.mutation({
       query: (album) => ({

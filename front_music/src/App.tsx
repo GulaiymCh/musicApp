@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {artistsApi} from "./store/api/artistApi";
+import React from 'react';
 import Layout from "./components/UI/Layout/Layout";
 import {Route, Routes} from "react-router-dom";
 import Artists from "./containers/Artists";
 import Albums from "./containers/Albums";
 import ArtistAlbums from "./containers/ArtistAlbums";
 import AlbumTracks from "./containers/AlbumTracks";
-import SighUp from "./containers/SignUP";
+import Register from "./containers/User/Register";
+import Login from "./containers/User/Login";
 
 const App = () => {
   return (
@@ -17,7 +17,8 @@ const App = () => {
           <Route path='/albums' element={<Albums/>}/>
           <Route path='/albums/:id' element={<ArtistAlbums/>}/>
           <Route path='/tracks/:id' element={<AlbumTracks/>}/>
-          <Route path='/register' element={<SighUp/>}/>
+          <Route path='/register' element={<Register/>}/>
+          <Route path='/login' element={<Login/>}/>
         </Routes>
       </Layout>
     </>
