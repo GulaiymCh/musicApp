@@ -13,6 +13,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from "./ToggleColorMode";
 import logoImg from '../../../../assests/logo.png';
 import {Link, NavLink} from "react-router-dom";
+import {useCheckLoginUser} from "../../../../store/hooks/myHooks";
+import UserAvatar, {userMenu} from "./UserAvatar";
+import {userApi} from "../../../../store/api/userApi";
+import {useAppDispatch} from "../../../../store/hooks/reduxHooks";
+import {logoutUserSuccess} from "../../../../store/slices/userSlice";
 
 const logoStyle = {
   width: '75px',
@@ -20,30 +25,30 @@ const logoStyle = {
   cursor: 'pointer',
 };
 
+const menu = [
+  {name: 'Artists', to: '/'},
+  {name: 'Albums', to: '/albums'},
+  {name: 'Tracks', to: '/'},
+  {name: 'Track History', to: '/'}
+]
+
 interface AppAppBarProps {
   mode: PaletteMode;
   toggleColorMode: () => void;
 }
 
 function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
-  const [open, setOpen] = React.useState(false);
-
+  const user = useCheckLoginUser();
+  const dispatch = useAppDispatch();
+  const [ logout, {error, isLoading} ] = userApi.useLogoutUserMutation();
+  const [open, setOpen] = React.useState(false)
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
 
-  const scrollToSection = (sectionId: string) => {
-    const sectionElement = document.getElementById(sectionId);
-    const offset = 128;
-    if (sectionElement) {
-      const targetScroll = sectionElement.offsetTop - offset;
-      sectionElement.scrollIntoView({ behavior: 'smooth' });
-      window.scrollTo({
-        top: targetScroll,
-        behavior: 'smooth',
-      });
-      setOpen(false);
-    }
+  const logoutUser = async () => {
+    await logout(0);
+    await dispatch(logoutUserSuccess());
   };
 
   return (
@@ -95,46 +100,13 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 alt="logo of sitemark"
               /></Link>
               <Box sx={{ display: { xs: 'none', md: 'flex' }, margin: '0 auto' }}>
-                <MenuItem
-                  onClick={() => scrollToSection('features')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <NavLink to={'/'} style={{textDecoration: 'none'}}>
-                    <Typography variant="body2" color="text.primary">
-                      Artists
+                {menu.map((item) => (
+                  <MenuItem sx={{ py: '6px', px: '12px' }} key={item.name}>
+                    <Typography component={NavLink} to={item.to} sx={{textDecoration: 'none'}} variant="body2" color="text.primary">
+                      {item.name}
                     </Typography>
-                  </NavLink>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection('testimonials')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <NavLink to={'/albums'} style={{textDecoration: 'none'}}>
-                    <Typography variant="body2" color="text.primary">
-                      Albums
-                    </Typography>
-                  </NavLink>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection('highlights')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <NavLink to={'/'} style={{textDecoration: 'none'}}>
-                    <Typography variant="body2" color="text.primary">
-                      Tracks
-                    </Typography>
-                  </NavLink>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection('pricing')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <NavLink to={'/'} style={{textDecoration: 'none'}}>
-                    <Typography variant="body2" color="text.primary">
-                      Track History
-                    </Typography>
-                  </NavLink>
-                </MenuItem>
+                  </MenuItem>
+                ))}
               </Box>
             </Box>
             <Box
@@ -145,24 +117,29 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               }}
             >
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-              <Button
-                color="primary"
-                variant="text"
-                size="small"
-                component={Link}
-                to='/login'
-              >
-                Sign in
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                component={Link}
-                to='/register'
-              >
-                Sign up
-              </Button>
+              {user ?
+                <UserAvatar avatarImage={user.avatarImage} logoutUser={logoutUser}/> :
+                <>
+                  <Button
+                    color="primary"
+                    variant="text"
+                    size="small"
+                    component={Link}
+                    to='/login'
+                  >
+                    Sign in
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                    component={Link}
+                    to='/register'
+                  >
+                    Sign up
+                  </Button>
+                </>
+              }
             </Box>
             <Box sx={{ display: { sm: '', md: 'none' } }}>
               <Button
@@ -174,7 +151,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               >
                 <MenuIcon />
               </Button>
-              <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+              <Drawer sx={{ display: { md: 'none' } }} anchor="right" open={open} onClose={toggleDrawer(false)}>
                 <Box
                   sx={{
                     minWidth: '60dvw',
@@ -193,49 +170,45 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   >
                     <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                   </Box>
-                  <MenuItem onClick={() => scrollToSection('features')}>
-                    <Link to={'/'} style={{textDecoration: 'none', color: 'inherit'}}>
-                      Artists
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('testimonials')}>
-                    <Link to={'/albums'} style={{textDecoration: 'none', color: 'inherit'}}>
-                      Albums
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('highlights')}>
-                    <Link to={'/'} style={{textDecoration: 'none', color: 'inherit'}}>
-                      Track
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('pricing')}>
-                    <Link to={'/'} style={{textDecoration: 'none', color: 'inherit'}}>
-                      Track History
-                    </Link>
-                  </MenuItem>
+                  {menu.map((item) => (
+                    <MenuItem key={item.name}>
+                      <Link to={item.to} style={{textDecoration: 'none', color: 'inherit'}}>
+                        {item.name}
+                      </Link>
+                    </MenuItem>
+                  ))}
                   <Divider />
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      component={Link}
-                      to='/register'
-                      sx={{ width: '100%' }}
-                    >
-                      Sign up
-                    </Button>
-                  </MenuItem>
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      component={Link}
-                      to='/login'
-                      sx={{ width: '100%' }}
-                    >
-                      Sign in
-                    </Button>
-                  </MenuItem>
+                  {
+                    user ?
+                      userMenu.map((item) => (
+                        <MenuItem key={item}>
+                          <Typography textAlign="center" onClick={item === 'Logout' ? logoutUser : undefined}>{item}</Typography>
+                        </MenuItem>
+                      )) :
+                      <>
+                        <MenuItem>
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            component={Link}
+                            to='/register'
+                            sx={{ width: '100%' }}
+                          >
+                            Sign up
+                          </Button>
+                        </MenuItem>
+                        <MenuItem>
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            component={Link}
+                            to='/login'
+                            sx={{ width: '100%' }}
+                          >
+                            Sign in
+                          </Button>
+                        </MenuItem></>
+                  }
                 </Box>
               </Drawer>
             </Box>

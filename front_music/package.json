@@ -19,6 +19,7 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
     "redux": "^5.0.1",
+    "redux-saga": "^1.3.0",
     "tss-react": "^4.9.10",
     "typescript": "^4.9.5"
   },

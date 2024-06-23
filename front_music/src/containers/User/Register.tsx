@@ -9,11 +9,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {Link} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import FormElement from "../../components/UI/Form/FormElement";
 import AvatarBlocks from "../../components/UI/AvatarBlocks/AvatarBlocks";
 import {userApi} from "../../store/api/userApi";
 import Copyright from "../../components/UI/Copyright/Copyright";
+import {Link} from "@mui/material";
+import {useAppDispatch} from "../../store/hooks/reduxHooks";
+import {loginSuccess} from "../../store/slices/userSlice";
 
 const defaultTheme = createTheme();
 
@@ -25,7 +28,9 @@ const EMPTY_USER = {
 };
 
 const Register = () => {
-  const [ registerUser, {error} ] = userApi.useRegisterUserMutation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [ registerUser, {error, isLoading} ] = userApi.useRegisterUserMutation();
   const [user, setUser] = useState(EMPTY_USER);
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,9 +38,14 @@ const Register = () => {
     setUser(prev => ({...prev, [name]: value}));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    registerUser(user).then(() => setUser(EMPTY_USER));
+    const {data} = await registerUser(user);
+    setUser(EMPTY_USER);
+    if (data) {
+      await dispatch(loginSuccess(data));
+      navigate('/');
+    }
   };
 
   const getFieldError = (fieldName: string) => {
@@ -77,7 +87,7 @@ const Register = () => {
                   label={'Email'}
                   autoFocus
                   sm={6}
-                  error={getFieldError('username')}
+                  error={getFieldError('email')}
                 />
                 <FormElement
                   name={'displayName'}
@@ -113,10 +123,8 @@ const Register = () => {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link to="/login">
-                    <Typography variant="body2" color='#1976d2'>
-                      Already have an account? Sign in
-                    </Typography>
+                  <Link component={RouterLink} to="/login" variant="body2">
+                    Already have an account? Sign in
                   </Link>
                 </Grid>
               </Grid>

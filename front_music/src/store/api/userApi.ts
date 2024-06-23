@@ -16,6 +16,12 @@ export const userApi = api.injectEndpoints({
         url: 'users/sessions',
         method: 'POST'
       })
+    }),
+    logoutUser: build.mutation({
+      query: () => ({
+        url: 'users/sessions',
+        method: 'DELETE'
+      })
     })
   })
 });

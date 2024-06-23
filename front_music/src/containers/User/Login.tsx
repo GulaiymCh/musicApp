@@ -8,12 +8,14 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {Link} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import FormElement from "../../components/UI/Form/FormElement";
 import {userApi} from "../../store/api/userApi";
 import Copyright from "../../components/UI/Copyright/Copyright";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import {Alert} from "@mui/material";
+import {Alert, Link} from "@mui/material";
+import {loginSuccess} from "../../store/slices/userSlice";
+import {useAppDispatch} from "../../store/hooks/reduxHooks";
 
 const defaultTheme = createTheme();
 
@@ -23,6 +25,8 @@ const EMPTY_USER = {
 };
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [ loginUser, { error, isLoading } ] = userApi.useLoginUserMutation();
   const [user, setUser] = useState(EMPTY_USER);
 
@@ -31,9 +35,14 @@ const Login = () => {
     setUser(prev => ({...prev, [name]: value}));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    loginUser(user).then(() => setUser(EMPTY_USER));
+    const {data} = await loginUser(user);
+    setUser(EMPTY_USER);
+    if (data) {
+      await dispatch(loginSuccess(data));
+      navigate('/');
+    }
   };
 
   return (
@@ -94,10 +103,8 @@ const Login = () => {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link to="/register">
-                    <Typography variant="body2" color='#1976d2'>
-                      Don't have an account? Sign Up
-                    </Typography>
+                  <Link component={RouterLink} to="/register" variant="body2">
+                    Don't have an account? Sign Up
                   </Link>
                 </Grid>
               </Grid>
