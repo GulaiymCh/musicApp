@@ -1,0 +1,20 @@
+export const trackPhotos = [
+  'https://images.pexels.com/photos/5740051/pexels-photo-5740051.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
+  'https://images.pexels.com/photos/9245015/pexels-photo-9245015.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/19261803/pexels-photo-19261803.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/25751435/pexels-photo-25751435.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/20643866/pexels-photo-20643866.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/25542632/pexels-photo-25542632.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/23503919/pexels-photo-23503919.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/26223021/pexels-photo-26223021.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/23640275/pexels-photo-23640275.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/16664618/pexels-photo-16664618.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load',
+  'https://images.pexels.com/photos/23638650/pexels-photo-23638650.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
+  'https://images.pexels.com/photos/17071144/pexels-photo-17071144.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
+  'https://images.pexels.com/photos/14641606/pexels-photo-14641606.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
+  'https://images.pexels.com/photos/26201510/pexels-photo-26201510.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
+  'https://images.pexels.com/photos/9450682/pexels-photo-9450682.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
+  'https://images.pexels.com/photos/25745292/pexels-photo-25745292.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
+  'https://images.pexels.com/photos/20888052/pexels-photo-20888052.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
+  'https://images.pexels.com/photos/6822511/pexels-photo-6822511.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load'
+];

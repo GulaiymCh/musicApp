@@ -1,7 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IUserApi} from "../../models/Interfaces";
+import {toast} from "react-toastify";
 
-export const userState: IUserApi = {
+export const initialState: IUserApi = {
+  _id: "",
   email: "",
   password: "",
   displayName: "",
@@ -9,20 +11,18 @@ export const userState: IUserApi = {
   token: ""
 }
 
-export const initialState = {
-  user: userState
-}
-
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     loginSuccess(state, {payload: user}: PayloadAction<IUserApi>) {
-      state.user = user;
+      Object.assign(state, user);
+      toast.success('Login success');
     },
 
     logoutUserSuccess(state) {
-      state.user = userState;
+      Object.assign(state, initialState);
+      toast.info('Logout');
     },
   }
 });

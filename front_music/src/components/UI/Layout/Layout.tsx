@@ -4,7 +4,7 @@ import {PaletteMode} from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import getLPTheme from './getLPTheme';
-import AppAppBar from "./components/AppAppBar";
+import AppAppBar from "./AppBar/AppAppBar";
 import Hero from "./components/Hero";
 
 interface LayoutProps {

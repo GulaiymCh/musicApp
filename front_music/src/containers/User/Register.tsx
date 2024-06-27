@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {ChangeEvent, useState} from 'react';
+import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -11,16 +10,17 @@ import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import FormElement from "../../components/UI/Form/FormElement";
-import AvatarBlocks from "../../components/UI/AvatarBlocks/AvatarBlocks";
+import AvatarBlocks from "../../components/AvatarBlocks/AvatarBlocks";
 import {userApi} from "../../store/api/userApi";
 import Copyright from "../../components/UI/Copyright/Copyright";
-import {Link} from "@mui/material";
+import {Alert, Link} from "@mui/material";
 import {useAppDispatch} from "../../store/hooks/reduxHooks";
 import {loginSuccess} from "../../store/slices/userSlice";
+import {useCheckLoginUser} from "../../store/hooks/myHooks";
 
 const defaultTheme = createTheme();
 
-const EMPTY_USER = {
+const emptyUser = {
   email: '',
   password: '',
   displayName: '',
@@ -29,19 +29,26 @@ const EMPTY_USER = {
 
 const Register = () => {
   const navigate = useNavigate();
+  const login = useCheckLoginUser();
   const dispatch = useAppDispatch();
-  const [ registerUser, {error, isLoading} ] = userApi.useRegisterUserMutation();
-  const [user, setUser] = useState(EMPTY_USER);
+  const [ registerUser, {error} ] = userApi.useRegisterUserMutation();
+  const [user, setUser] = useState(emptyUser);
+
+  useEffect(() => {
+    if(login) {
+      navigate(-1)
+    }
+  }, [login, navigate])
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
     setUser(prev => ({...prev, [name]: value}));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const {data} = await registerUser(user);
-    setUser(EMPTY_USER);
+    setUser(emptyUser);
     if (data) {
       await dispatch(loginSuccess(data));
       navigate('/');
@@ -49,11 +56,14 @@ const Register = () => {
   };
 
   const getFieldError = (fieldName: string) => {
-    try {
-      // @ts-ignore
-      return error.data.errors[fieldName].message;
-    } catch {
-      return undefined;
+    // @ts-ignore
+    if (error && error.data.errors) {
+      try {
+        // @ts-ignore
+        return error.data.errors[fieldName].message;
+      } catch {
+        return undefined;
+      }
     }
   };
 
@@ -61,7 +71,6 @@ const Register = () => {
     <ThemeProvider theme={defaultTheme}>
       <Grid sx={{position: 'absolute', top: 0, left: '50%', transform: 'translate(-50%, 0)', width: '100%', height: '100%', zIndex: 1100, background:'white'}}>
         <Container component="main" maxWidth="xs">
-          <CssBaseline />
           <Box
             sx={{
               marginTop: 8,
@@ -76,7 +85,13 @@ const Register = () => {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            {// @ts-ignore
+              error && Object.keys(error.data).length === 0 && (
+              <Alert severity="error" sx={{width: '100%', justifyContent: 'center'}}>
+                Error, something go wrong!
+              </Alert>
+            )}
+            <Box component="form" onSubmit={handleSubmit} mt={3}>
               <Grid container spacing={2}>
                 <FormElement
                   name={'email'}

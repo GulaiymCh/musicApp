@@ -3,7 +3,7 @@ import {Grid, TextField} from "@mui/material";
 
 interface FormElementI {
   name: string,
-  value: string,
+  value: string | null,
   onChange: (e: ChangeEvent<HTMLInputElement>) => void,
   label?: string,
   error?: string,

@@ -19,7 +19,7 @@ const store = configureStore({
 
 store.subscribe(() => {
   saveToLocalStorage({
-    user: store.getState().user?.user,
+    user: store.getState().user
   })
 });
 

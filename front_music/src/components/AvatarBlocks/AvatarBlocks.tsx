@@ -2,15 +2,15 @@ import React, {FC, useState} from 'react';
 import {Grid, Typography} from "@mui/material";
 import {nanoid} from "@reduxjs/toolkit";
 import {makeStyles} from "tss-react/mui";
-import avatar1 from '../../../assests/avatars/avatar1.avif';
-import avatar2 from '../../../assests/avatars/avatar2.avif';
-import avatar3 from '../../../assests/avatars/avatar3.avif';
-import avatar4 from '../../../assests/avatars/avatar4.avif';
-import avatar5 from '../../../assests/avatars/avatar5.jpg';
-import avatar6 from '../../../assests/avatars/avatar6.avif';
-import avatar7 from '../../../assests/avatars/avatar7.jpg';
-import avatar8 from '../../../assests/avatars/avatar8.avif';
-import avatar9 from '../../../assests/avatars/avatar9.avif';
+import avatar1 from '../../assests/avatars/avatar1.avif';
+import avatar2 from '../../assests/avatars/avatar2.avif';
+import avatar3 from '../../assests/avatars/avatar3.avif';
+import avatar4 from '../../assests/avatars/avatar4.avif';
+import avatar5 from '../../assests/avatars/avatar5.jpg';
+import avatar6 from '../../assests/avatars/avatar6.avif';
+import avatar7 from '../../assests/avatars/avatar7.jpg';
+import avatar8 from '../../assests/avatars/avatar8.avif';
+import avatar9 from '../../assests/avatars/avatar9.avif';
 
 const useStyles = makeStyles()(() => ({
   avatar: {

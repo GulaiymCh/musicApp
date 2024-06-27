@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ChangeEvent, useState} from 'react';
+import {ChangeEvent, useEffect, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,6 +16,8 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import {Alert, Link} from "@mui/material";
 import {loginSuccess} from "../../store/slices/userSlice";
 import {useAppDispatch} from "../../store/hooks/reduxHooks";
+import {useCheckLoginUser} from "../../store/hooks/myHooks";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 const defaultTheme = createTheme();
 
@@ -26,9 +28,16 @@ const EMPTY_USER = {
 
 const Login = () => {
   const navigate = useNavigate();
+  const login = useCheckLoginUser();
   const dispatch = useAppDispatch();
   const [ loginUser, { error, isLoading } ] = userApi.useLoginUserMutation();
   const [user, setUser] = useState(EMPTY_USER);
+
+  useEffect(() => {
+    if(login) {
+      navigate(-1)
+    }
+  }, [login, navigate])
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -41,9 +50,10 @@ const Login = () => {
     setUser(EMPTY_USER);
     if (data) {
       await dispatch(loginSuccess(data));
-      navigate('/');
     }
   };
+
+  if (isLoading) return <Spinner/>
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -66,9 +76,9 @@ const Login = () => {
             </Typography>
             {error && (
               <Alert severity="error" sx={{width: '100%', justifyContent: 'center'}}>
-                Error! {// @ts-ignore
-                error.data
-              }
+                Error, {// @ts-ignore
+                error.hasOwnProperty('data') && Object.keys(error.data).length !== 0 ? error.data : 'something go wrong'
+              }!
               </Alert>
             )}
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>

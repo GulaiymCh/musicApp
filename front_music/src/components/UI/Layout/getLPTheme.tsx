@@ -146,7 +146,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
     },
   },
   typography: {
-    fontFamily: ['"Inter", "sans-serif"'].join(','),
+    fontFamily: ['"DM Serif Text", "serif"'].join(','),
     h1: {
       fontSize: 60,
       fontWeight: 600,
@@ -570,6 +570,7 @@ export default function getLPTheme(mode: PaletteMode): ThemeOptions {
             },
             '& .MuiInputBase-input': {
               boxSizing: 'border-box',
+              height: '100%',
               '&::placeholder': {
                 opacity: 0.7,
               },
@@ -578,7 +579,7 @@ export default function getLPTheme(mode: PaletteMode): ThemeOptions {
               boxSizing: 'border-box',
               minWidth: 280,
               minHeight: 40,
-              height: '100%',
+              height: '100% important!',
               borderRadius: '10px',
               border: '1px solid',
               borderColor: gray[200],

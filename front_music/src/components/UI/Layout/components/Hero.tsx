@@ -15,16 +15,18 @@ const Hero: FC<HeroProps> = ({children}) => (
       width: '100%',
       backgroundImage:
         theme.palette.mode === 'light'
-          ? 'linear-gradient(180deg, #CEE5FD, #FFF)'
+          ? 'white'
           : `linear-gradient(#02294F, ${alpha('#090E10', 0.0)})`,
       backgroundSize: '100% 20%',
       backgroundRepeat: 'no-repeat',
     })}
   >
     <Container
+      maxWidth={"xl"}
       sx={{
         pt: { xs: 14, sm: 20 },
-        pb: { xs: 8, sm: 12 }
+        pb: { xs: 8, sm: 12 },
+        minHeight: '100vh'
       }}
     >
       {children}

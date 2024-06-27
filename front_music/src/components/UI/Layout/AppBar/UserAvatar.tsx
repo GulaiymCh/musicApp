@@ -7,15 +7,17 @@ import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import {AccountCircle} from "@mui/icons-material";
+import {Link} from "react-router-dom";
+import {profileMenu} from "./AppAppBar";
 
-export const userMenu = ['Profile', 'Logout'];
 
 interface UserAvatarProps {
   avatarImage?: string,
-  logoutUser: () => void
+  logoutUser: () => void,
+  role: string
 }
 
-const UserAvatar: FC<UserAvatarProps> = ({avatarImage, logoutUser}) => {
+const UserAvatar: FC<UserAvatarProps> = ({avatarImage, logoutUser, role}) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -63,11 +65,26 @@ const UserAvatar: FC<UserAvatarProps> = ({avatarImage, logoutUser}) => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {userMenu.map((item) => (
-          <MenuItem key={item} onClick={handleCloseUserMenu}>
-            <Typography textAlign="center" onClick={item === 'Logout' ? logoutUser : undefined}>{item}</Typography>
-          </MenuItem>
-        ))}
+        {profileMenu.map((item) => {
+          if (!item.admin) {
+            return (
+              <MenuItem key={item.name} onClick={handleCloseUserMenu}>
+                <Typography component={Link} to={item.to} style={{textDecoration: 'none', color: 'inherit', width: '100%', fontFamily: '"IBM Plex Sans Condensed", "sans-serif"'}}>{item.name}</Typography>
+              </MenuItem>
+            )
+          }
+          if (role === 'admin') {
+            return (
+              <MenuItem key={item.name} onClick={handleCloseUserMenu}>
+                <Typography component={Link} to={item.to} style={{textDecoration: 'none', color: 'inherit', width: '100%', fontFamily: '"IBM Plex Sans Condensed", "sans-serif"'}}>{item.name}</Typography>
+              </MenuItem>
+            )
+          }
+          return <></>
+        })}
+        <MenuItem onClick={handleCloseUserMenu}>
+          <Typography textAlign="center" onClick={logoutUser}>Logout</Typography>
+        </MenuItem>
       </Menu>
     </Box>
   );
