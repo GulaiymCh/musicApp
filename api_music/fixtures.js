@@ -86,83 +86,83 @@ const run = async () => {
     {
       title: "Getting Older",
       album: Happier._id,
-      duration: "04:04",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "I Didn't Change My Numbe",
       album: Happier._id,
-      duration: "02:38",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "Billie Bossa Nova",
       album: Happier._id,
-      duration: "03:16",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "My Future",
       album: Happier._id,
-      duration: "03:30",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "Happier Than Ever",
       album: Happier._id,
-      duration: "04:58",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       album: dont._id,
       title: "Ocean Eyes",
-      duration: "03:20",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: 	"Hostage",
       album: dont._id,
-      duration: "03:48",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: 	"Bellyache",
       album: dont._id,
-      duration: "03:00",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "Copycat",
       album: dont._id,
-      duration: "03:13",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "My Boy",
       album: dont._id,
-      duration: "02:50",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3",
     },{
       title: "Intro",
       album: Everything._id,
-      duration: "01:20",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: 	"One Last Time",
       album: Everything._id,
-      duration: "03:17",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "Why Try",
       album: Everything._id,
-      duration: "03:31",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "My Everything",
       album: Everything._id,
-      duration: "02:49",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: 	"Break Free",
       album: Everything._id,
-      duration: "03:34",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     },{
       title: "I wanna dance with somebody",
       album: Whitney._id,
-      duration: "04:50",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "Love will save the day",
       album: Whitney._id,
-      duration: "05:23",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "So emotional",
       album: Whitney._id,
-      duration: "04:37",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "Love is a contact sport",
       album: Whitney._id,
-      duration: "04:19",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }, {
       title: "For the love of you",
       album: Whitney._id,
-      duration: "04:12",
+      mp3: "fixtures/yToyYA7XuWsdrmf3AQUnB.mp3"
     }
   ];
   

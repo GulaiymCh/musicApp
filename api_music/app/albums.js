@@ -8,6 +8,8 @@ const config = require('../config');
 const auth = require('../middleware/auth');
 const User = require('../models/User');
 const permit = require('../middleware/permit');
+const Track = require('../models/Track');
+const TrackHistory = require('../models/TrackHistory');
 
 const router = express.Router();
 
@@ -55,13 +57,29 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/unPublished', auth, permit('admin'), async (req, res) => {
+  try {
+    const albums = await Album.find({ publish: false }).populate('artist');
+
+    res.send(albums);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
-    const album = await Album
-      .findById(req.params.id)
-      .populate('artist');
-  
-    res.send(album);
+    const token = req.get('Authorization');
+    const user = await User.findOne({token});
+
+    let album = await Album.find({ _id: req.params.id, publish: true });
+    if (Boolean(user) && user.role !== 'admin') {
+      const artistsUnpublish = await Album.find({ publish: false, user: user._id, _id: req.params.id });
+      album = [...album, ...artistsUnpublish];
+    } else if (Boolean(user) && user.role === 'admin') {
+      album = await Album.find({_id: req.params.id});
+    }
+    res.send(album[0]);
   } catch (e) {
     res.sendStatus(500);
   }
@@ -98,13 +116,14 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
 router.delete('/:id', auth, permit('admin'), async (req, res) => {
   const id = req.params.id;
   try {
-    const album = await Album.deleteOne({_id: id});
-    
-    if (album) {
-      res.send('Album was removed');
-    } else {
-      res.status(404).send('Album not found');
-    }
+    const trackF = await Track.find({ album: id });
+    const trackIds = trackF.map(track => track._id);
+
+    await TrackHistory.deleteMany({ track: { $in: trackIds } });
+    await Track.deleteMany({ album: id });
+    const album = await Album.deleteOne({ _id: id });
+
+    res.send(album);
   } catch (e) {
     res.sendStatus(500);
   }

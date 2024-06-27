@@ -1,6 +1,7 @@
 const express = require('express');
 const TrackHistory = require('../models/TrackHistory');
 const auth = require("../middleware/auth");
+const mongoose = require('mongoose');
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.get('/', auth, async (req, res) => {
           select: "title"
         },
       },
-      select: "title"
+      select: "title mp3"
     };
     
     const trackHistory = await TrackHistory
@@ -34,13 +35,18 @@ router.post('/secret', auth, async (req, res) => {
   if (!req.body.track) {
     return res.status(400).send({error: 'Data not valid'});
   }
-  
-  const trackHistoryData = {
-    track: req.body.track,
-    user: req.user._id,
-  };
-  
+
   try {
+    const trackOld = await TrackHistory.findOne({track: new mongoose.Types.ObjectId(req.body.track)});
+
+    if(trackOld) {
+      await TrackHistory.deleteOne({_id: trackOld._id});
+    }
+
+    const trackHistoryData = {
+      track: req.body.track,
+      user: req.user._id,
+    };
     const trackHistory = new TrackHistory(trackHistoryData);
   
     await trackHistory.save();

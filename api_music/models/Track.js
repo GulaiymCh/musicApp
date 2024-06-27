@@ -12,10 +12,6 @@ const TrackSchema = new Schema({
     ref: 'Album',
     required: true,
   },
-  duration: {
-    type: String,
-    required: true,
-  },
   number: {
     type: Number,
     required: true

@@ -6,6 +6,7 @@ const multer = require('multer');
 const config = require('../config');
 const {nanoid} = require('nanoid');
 const path = require('path');
+const TrackHistory = require('../models/TrackHistory');
 
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.get('/', auth, async (req, res) => {
           path: "artist",
           select: "title"
         },
-        select: "title"
+        select: "title image",
       };
 
       if (req.user.role === 'admin') {
@@ -43,13 +44,21 @@ router.get('/', auth, async (req, res) => {
 
       res.send(tracks);
     } else {
+      const populate = {
+        path: "album",
+        populate: {
+          path: "artist",
+          select: "title"
+        },
+        select: "title image",
+      };
       if (req.user.role === 'admin') {
-        const tracks = await Track.find().sort({number: 1}).populate('album', '_id, title');
+        const tracks = await Track.find().sort({number: 1}).populate(populate);
         return res.send(tracks);
       }
-  
-      let tracks = await Track.find({ publish: true }).sort({number: 1}).populate('album', '_id, title');
-      const tracksUnpublish = await Track.find({ publish: false, user: req.user._id }).sort({number: 1}).populate('album', '_id, title');
+
+      let tracks = await Track.find({ publish: true }).sort({number: 1}).populate(populate);
+      const tracksUnpublish = await Track.find({ publish: false, user: req.user._id }).sort({number: 1}).populate(populate);
       tracks = [...tracks, ...tracksUnpublish];
       
       res.send(tracks);
@@ -59,9 +68,27 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+router.get('/unPublished', auth, permit('admin'), async (req, res) => {
+  try {
+    const populate = {
+      path: "album",
+      populate: {
+        path: "artist",
+        select: "title"
+      },
+      select: "title image",
+    };
+    const tracks = await Track.find({ publish: false }).populate(populate);
+
+    res.send(tracks);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
 router.post('/', auth,upload.single('mp3'), async (req, res) => {
-  const {title, album, duration} = req.body;
-  if (!title || !album || !duration) {
+  const {title, album} = req.body;
+  if (!title || !album) {
     return res.status(400).send({error: 'Data not valid'});
   }
   
@@ -70,12 +97,11 @@ router.post('/', auth,upload.single('mp3'), async (req, res) => {
   const trackData = {
     title,
     album,
-    duration,
     number: tracks ? tracks[tracks.length - 1].number + 1 : 1,
     mp3: 'uploads/' + req.file.filename,
     user: req.user._id,
   };
-  
+
   try {
     const track = new Track(trackData);
     await track.save();
@@ -89,13 +115,10 @@ router.post('/', auth,upload.single('mp3'), async (req, res) => {
 router.delete('/:id', auth, permit('admin'), async (req, res) => {
   const id = req.params.id;
   try {
+    await TrackHistory.deleteMany({ track: id});
     const track = await Track.deleteOne({_id: id});
-    
-    if (track) {
-      res.send('Track was removed');
-    } else {
-      res.status(404).send('Track not found');
-    }
+
+    res.send(track);
   } catch (e) {
     res.sendStatus(500);
   }
