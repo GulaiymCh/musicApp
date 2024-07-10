@@ -14,7 +14,7 @@ const UnpublishedArtistsList = () => {
   if (error) return <Navigate to={'/errorPage'} state={error}/>;
   if (isLoading) return <Spinner/>
 
-  return artists.length < 1 ? (
+  return artists.length !== 0 ? (
     <Grid container spacing={2} alignItems={"top"}>
       {artists.map((item: IArtistApi) => (
         <Grid item xs={8} sm={4} md={3} key={nanoid()}>

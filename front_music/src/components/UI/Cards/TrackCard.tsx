@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC, ReactNode} from 'react';
+import {FC, ReactNode, SyntheticEvent} from 'react';
 import {styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -55,6 +55,16 @@ const TrackCard:FC<TrackCardProps> = ({track, photo, children, trackListenedDate
   const { classes } = useStyles();
   const [writeInHistory] = trackHistoryApi.useWriteInTrackHistoryMutation();
 
+  const handlePlay = (e: SyntheticEvent) => {
+    const audios = document.getElementsByTagName('audio');
+    for(var i = 0, len = audios.length; i < len;i++){
+      if(audios[i] != e.target){
+        audios[i].pause();
+      }
+    }
+    writeInHistory(track._id)
+  };
+
   return (
     <>
       {trackListenedDate && <Typography variant={"caption"}>{new Date(trackListenedDate).toLocaleString()}</Typography>}
@@ -83,7 +93,7 @@ const TrackCard:FC<TrackCardProps> = ({track, photo, children, trackListenedDate
                   {track.title}
                 </Typography>
                 <Box position='relative'>
-                  <audio controls style={{width: '100%'}} className={classes.audioPlayer} onPlay={() => writeInHistory(track._id)}>
+                  <audio controls style={{width: '100%'}} className={classes.audioPlayer} onPlay={handlePlay}>
                     <source src={apiUrl + track.mp3} type="audio/mpeg"/>
                   </audio>
                 </Box>

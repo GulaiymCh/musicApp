@@ -14,7 +14,7 @@ const UnpublishedAlbumsList = () => {
   if (error) return <Navigate to={'/errorPage'} state={error}/>;
   if (isLoading) return <Spinner/>
 
-  return albums.length < 1 ? (
+  return albums.length !== 0 ? (
     <Grid container spacing={2} alignItems={"top"}>
       {albums.map((item: IAlbumApi) => (
         <Grid item xs={8} sm={4} md={3} key={nanoid()}>

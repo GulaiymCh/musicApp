@@ -30,7 +30,7 @@ const ArtistAlbums = () => {
             <Typography textAlign={"center"} variant={'h5'} mb={2}>
               Albums:
             </Typography>
-            <Grid container spacing={2} alignItems={"center"} justifyContent={"center"}>
+            <Grid container spacing={2} alignItems={"stretch"} justifyContent={"center"}>
               {albums.map((item: IAlbumApi) => (
                 <Grid item xs={8} sm={4} md={3} key={nanoid()}>
                   <MyCard element={item} shortImg={true} path='tracks'>
