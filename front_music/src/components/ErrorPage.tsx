@@ -5,7 +5,7 @@ import {Box, Typography} from "@mui/material";
 
 const ErrorPage = () => {
   const location = useLocation();
-  const {data, originalStatus} = location.state || {data: 'Oops! Page not found', originalStatus: '404'};
+  const {data, originalStatus} = location.state || {data: {error: 'Oops! Page not found'}, originalStatus: '404'};
 
   return (
     <Box
@@ -22,7 +22,7 @@ const ErrorPage = () => {
         ERROR {originalStatus}
       </div>
       <Typography variant={'subtitle1'} sx={{fontFamily: '"IBM Plex Sans Condensed", "sans-serif" !important',}}>
-        {data}.
+        {data.error}
       </Typography>
     </Box>
   );

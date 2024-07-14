@@ -7,9 +7,15 @@ import MyCard from "../../components/UI/Cards/MyCard";
 import {Navigate} from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DeletePublishBtns from "../../components/UI/Buttons/DeletePublishBtns";
+import {useCheckLoginUser} from "../../store/hooks/myHooks";
 
 const UnpublishedArtistsList = () => {
   const { data: artists, error, isLoading } = artistsApi.useGetUnpublishedArtistsQuery(0);
+  const user = useCheckLoginUser();
+
+  if (!user) {
+    return <Navigate to={'/'}/>
+  }
 
   if (error) return <Navigate to={'/errorPage'} state={error}/>;
   if (isLoading) return <Spinner/>

@@ -10,7 +10,7 @@ module.exports = {
     options: {useNewUrlParser: true},
   },
   facebook: {
-    appId: '442348717999404',
+    appId: '',
     appSecret: process.env.FACEBOOK_APP_SECRET,
   },
 };

@@ -8,7 +8,7 @@ interface TracksInAlbumProps {
 }
 
 const TracksInAlbum: FC<TracksInAlbumProps> = ({id}) => {
-  const { data: tracks, error, isLoading } = trackApi.useGetTracksOfAlbumQuery(id);
+  const { data: tracks } = trackApi.useGetTracksOfAlbumQuery(id);
   return (
     tracks && tracks.length > 0 ?
       <>
