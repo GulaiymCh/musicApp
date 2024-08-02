@@ -18,7 +18,7 @@ Music App - это веб-приложение, где пользователи 
 
 ## Технологии
 
-- **Frontend**: JavaScript, TypeScript, React, MUI
+- **Frontend**: JavaScript, TypeScript, React, RTK Query, MUI
 - **Backend**: Node.js, Express
 - **База данных**: MongoDB
 
